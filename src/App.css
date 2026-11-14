@@ -1,16 +1,21 @@
 .camera-preview {
+  position: relative;
+  top: -150px;
   display: block;
   width: 100%;
-  max-width: 640px;
-  aspect-ratio: 4 / 3;
+  max-width: 700px;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   background: white;
-  border-radius: 12px;
+  border-radius: 20px;
   transform: scaleX(-1);
-  .container {
-    display: grid;
-    place-items: center;
-    height: 100vh; /* Container needs a defined height to center vertically */
-  }
 
+}
+.camera-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 12px;
 }

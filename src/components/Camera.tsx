@@ -40,7 +40,7 @@ function Camera() {
     }, [])
 
     return (
-        <div>
+        <div className ="camera-container">
             <video
                 ref={videoRef}
                 className="camera-preview"

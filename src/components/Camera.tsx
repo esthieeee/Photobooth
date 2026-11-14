@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState} from 'react'
 
 function Camera() {
     const videoRef = useRef<HTMLVideoElement>(null)
+    const [isMirrored, setIsMirrored] = useState(false)
 
     useEffect(() => {
         let stream: MediaStream | null = null
@@ -39,12 +40,25 @@ function Camera() {
     }, [])
 
     return (
-        <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-        />
+        <div>
+            <video
+                ref={videoRef}
+                className="camera-preview"
+                style = {{
+                    transform: isMirrored ? 'scalex(-1)' : 'none',
+                }}
+                autoPlay
+                playsInline
+                muted
+            />
+            <button
+                type='button'
+                onClick={() => setIsMirrored((previous) => !previous)}
+                >
+                Flip preview
+            </button>
+        </div>
+
     )
 }
 

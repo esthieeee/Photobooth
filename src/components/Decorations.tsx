@@ -9,8 +9,7 @@ type Sticker = {
     y: number
 }
 
-function Decorations() {
-    const [frameColor, setFrameColor] = useState('white')
+function Decorations({ photos }: { photos: string[] }) {    const [frameColor, setFrameColor] = useState('white')
     const [stickers, setStickers] = useState<Sticker[]>([])
 
     function addSticker(emoji: string) {
@@ -108,21 +107,19 @@ return (
     }}
 >
 
-
-
-
-
-                <div className="photo-placeholder">
-                    Photo 1
-                </div>
-
-                <div className="photo-placeholder">
-                    Photo 2
-                </div>
-
-                <div className="photo-placeholder">
-    Photo 3
-</div>
+                {[0, 1, 2].map(index => (
+    <div className="photo-placeholder" key={index}>
+        {photos[index] ? (
+            <img
+                src={photos[index]}
+                alt={`Photo ${index + 1}`}
+                className="captured-photo"
+            />
+        ) : (
+            `Photo ${index + 1}`
+        )}
+    </div>
+))}
 
 <div className="sticker-area">
     {stickers.map(sticker => (

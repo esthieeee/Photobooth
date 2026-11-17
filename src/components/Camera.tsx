@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState} from 'react'
 
-function Camera() {
-    const videoRef = useRef<HTMLVideoElement>(null)
+function Camera({ onCapture }: { onCapture: (photo: string) => void }) {    const videoRef = useRef<HTMLVideoElement>(null)
     const [isMirrored, setIsMirrored] = useState(false)
 
     useEffect(() => {
@@ -39,27 +38,60 @@ function Camera() {
         }
     }, [])
 
-    return (
-        <div className ="camera-container">
-            <video
-                ref={videoRef}
-                className="camera-preview"
-                style = {{
-                    transform: isMirrored ? 'scalex(-1)' : 'none',
-                }}
-                autoPlay
-                playsInline
-                muted
-            />
-            <button
-                type='button'
-                onClick={() => setIsMirrored((previous) => !previous)}
-                >
-                Flip preview
-            </button>
-        </div>
+    function capturePhoto() {
+    const video = videoRef.current
 
-    )
+    if (!video || !video.videoWidth) return
+
+    const canvas = document.createElement('canvas')
+
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+
+    const context = canvas.getContext('2d')
+
+    if (!context) return
+
+    if (isMirrored) {
+        context.translate(canvas.width, 0)
+        context.scale(-1, 1)
+    }
+
+    context.drawImage(video, 0, 0)
+
+    const photo = canvas.toDataURL('image/png')
+
+    onCapture(photo)
+}
+
+   return (
+    <div className="camera-container">
+        <video
+            ref={videoRef}
+            className="camera-preview"
+            style={{
+                transform: isMirrored ? 'scaleX(-1)' : 'none',
+            }}
+            autoPlay
+            playsInline
+            muted
+        />
+
+        <button
+            type="button"
+            onClick={() => setIsMirrored((previous) => !previous)}
+        >
+            Flip preview
+        </button>
+
+        <button
+            type="button"
+            onClick={capturePhoto}
+        >
+            Take Photo
+        </button>
+    </div>
+)
 }
 
 export default Camera
